@@ -42,3 +42,18 @@ export const search = (query) =>
     body: JSON.stringify({ query })
   }).then(res => res.json())
     .then(data => data.books)
+
+export const remove = (book) =>
+  fetch(`${api}/books/${book.id}`, { method: 'DELETE', headers })
+    .then(res => res.json())
+    .then(data => data.book)
+
+export const create = (body) =>
+  fetch(`${api}/books`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }).then(res => res.json())
