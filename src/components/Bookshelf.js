@@ -1,8 +1,8 @@
-import React from 'react'
-import * as BooksAPI from './utils/BooksAPI'
+import React, { Component } from 'react'
+import * as BooksAPI from '../utils/BooksAPI'
 import { Link } from 'react-router-dom'
 
-class Bookshelf extends React.Component {
+class Bookshelf extends Component {
     state = {
         books: []
       }

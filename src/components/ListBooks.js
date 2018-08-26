@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import sortBy from 'sort-by'
-import * as BooksAPI from './utils/BooksAPI'
+import * as BooksAPI from '../utils/BooksAPI'
 import { Link } from 'react-router-dom'
+import ReactBookshelf from './ReactBookshelf'
 
 class ListBooks extends Component {
     static propTypes = {
@@ -44,7 +44,9 @@ class ListBooks extends Component {
     };
     
     clearQuery = () => {
-        this.setState({ query: '' })
+        this.setState({ query: '' });
+        this.setState({showingBooks: '0'});
+        this.setState({spanElement: '0'});
     };
     
     render() {
@@ -78,6 +80,7 @@ class ListBooks extends Component {
                 <div className="search-books-results">
                     <ol className="books-grid"></ol>
                         <div className='showing-books'>
+                            <ReactBookshelf></ReactBookshelf>
                             <p>{spanElement} Results Found </p>
                             <button onClick={this.clearQuery}>Show all</button>
                         </div>

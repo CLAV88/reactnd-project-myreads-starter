@@ -1,9 +1,9 @@
 
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom'
-import Bookshelf from './Bookshelf'
+import Bookshelf from './components/Bookshelf'
 import './App.css'
-import ListBooks from './ListBooks';
+import ListBooks from './components/ListBooks';
 
 class BooksApp extends Component {
     render() {
