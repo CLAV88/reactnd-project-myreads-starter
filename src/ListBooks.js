@@ -1,88 +1,90 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import escapeRegExp from 'escape-string-regexp'
 import sortBy from 'sort-by'
+import * as BooksAPI from './utils/BooksAPI'
+import { Link } from 'react-router-dom'
 
 class ListBooks extends Component {
     static propTypes = {
         books: PropTypes.array.isRequired,
         onDeleteBook: PropTypes.func.isRequired
-      }
+    }
     
-      state = {
-        query: ''
-      }
-    
-      updateQuery = (query) => {
-        this.setState({ query: query.trim() })
-      }
-    
-      clearQuery = () => {
-        this.setState({ query: '' })
-      }
-    
-      render() {
-        const { books, onDeleteBook } = this.props
-        const { query } = this.state
-    
-        let showingBooks
-        if (query) {
-          const match = new RegExp(escapeRegExp(query), 'i')
-          showingBooks = books.filter((book) => match.test(book.name))
+    state = {
+        query: '',
+        books: [],
+        showingBooks: [],
+        spanElement: '0'
+    }
+    componentDidMount() {
+        BooksAPI.getAll().then((books) => {
+            this.setState({ books })
+        })
+    }
+    updateQuery = (query) => {
+        this.setState({ 
+            query: query
+        });
+        this.updateBooks(query)
+    };
+
+    updateBooks = function (query) {
+        BooksAPI.search(query).then((showingBooks) => {
+            this.setState({ showingBooks });
+            this.updateCount(showingBooks);
+        });
+    };
+
+    updateCount = function (showingBooks) {
+        if (showingBooks) {
+            this.setState({spanElement: showingBooks.length});
         } else {
-          showingBooks = books;
+            this.setState({spanElement: 0});
         }
+    };
     
-        showingBooks.sort(sortBy('title'))
+    clearQuery = () => {
+        this.setState({ query: '' })
+    };
+    
+    render() {
 
-            return (
-                <div className="search-books-input-wrapper">
-                    {/*
-                    NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                    You can find these search terms here:
-                    https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+    const query = this.state.query;
+    const books = this.state.books;
+    const showingBooks = this.state.showingBooks;
+    const spanElement = this.state.spanElement;
 
-                    However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                    you don't find a specific author or title. Every search is limited by search terms.
-                    */
-                    }
-                    <div className='list-books-top'>
+
+        return (
+            <div className="search-books">
+                <div className="search-books-bar">
+                    <Link to="/" className="close-search">Close</Link>
+                    <div className="search-books-input-wrapper">
+                        {/*
+                        NOTES: The search from BooksAPI is limited to a particular set of search terms.
+                        You can find these search terms here:
+                        https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+                        However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
+                        you don't find a specific author or title. Every search is limited by search terms.
+                        */}
                         <input 
-                        className='search-books'
-                        type="text" 
+                        type="text"
                         placeholder="Search by title or author"
                         value={query}
-                        onChange={(event) => this.updateQuery(event.target.value) }
+                        onChange={(event) => this.updateQuery(event.target.value)}
                         />
-                        <Link
-                            to='/create'
-                            className='add-book'
-                        >Add Contact</Link>
                     </div>
-            {showingBooks.length !== books.length && (
-                <div className="search-books-results">    
-                    <span>Now showing {showingBooks.length} of {books.length} total</span>
-                    <button onClick={this.clearQuery}>Show all</button>
                 </div>
-            )} 
-
-            <ol className="books-grid">
-                {showingBooks.map((book) => (
-                    <li key={book.id} className='book-list-item'>
-                        <div className='book-details'>
-                            <p>{book.name}</p>
-                            <p>{book.email}</p>
+                <div className="search-books-results">
+                    <ol className="books-grid"></ol>
+                        <div className='showing-books'>
+                            <p>{spanElement} Results Found </p>
+                            <button onClick={this.clearQuery}>Show all</button>
                         </div>
-                        <button onClick={() => onDeleteBook(book)} className='book-remove'>
-                            Remove
-                        </button>
-                    </li>
-                ))}
-            </ol>
-        </div>
-    )
-  }
-}
+                </div>
+            </div>
+        )
+        }
+    }
 
 export default ListBooks;
