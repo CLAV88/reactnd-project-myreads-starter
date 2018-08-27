@@ -80,7 +80,7 @@ class ListBooks extends Component {
                 <div className="search-books-results">
                     <ol className="books-grid"></ol>
                         <div className='showing-books'>
-                            <ReactBookshelf></ReactBookshelf>
+                            <ReactBookshelf books={showingBooks}/>
                             <p>{spanElement} Results Found </p>
                             <button onClick={this.clearQuery}>Show all</button>
                         </div>

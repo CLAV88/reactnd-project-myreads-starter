@@ -38,7 +38,7 @@ body, .app {
 
 .bookshelf-title {
   border-bottom: 1px solid #dedede;
-  text-align: center;
+
 }
 .bookshelf-books {
   text-align: center;
@@ -118,8 +118,8 @@ body, .app {
 .books-grid li {
   padding: 10px 15px;
   text-align: left;
-  margin-right:5em;
-  margin-left:5em;
+/*   margin-right:5em;
+  margin-left:5em; */
 }
 
 .book {
