@@ -3,21 +3,15 @@ import PropTypes from 'prop-types'
 import * as BooksAPI from '../utils/BooksAPI'
 import { Link } from 'react-router-dom'
 import ReactBookshelf from './ReactBookshelf'
-import { debounce } from "throttle-debounce";
+import { debounce } from 'throttle-debounce';
 
-class ListBooks extends Component {
-    static propTypes = {
-        books: PropTypes.array.isRequired,
-        onDeleteBook: PropTypes.func.isRequired
-    }
-
-    
+class Search extends Component {
     state = {
         query: '',
         books: [],
         showingBooks: [],
         spanElement: '0',
-        updateQuery: debounce(500, this.updateQuery)
+        updateQuery: debounce('750', this.updateQuery)
     }
     componentDidMount() {
         BooksAPI.getAll().then((books) => {
@@ -47,7 +41,7 @@ class ListBooks extends Component {
     };
     
     clearQuery = () => {
-        this.setState({ query: '' });
+        this.setState({query: ''});
         this.setState({showingBooks: '0'});
         this.setState({spanElement: '0'});
     };
@@ -55,7 +49,6 @@ class ListBooks extends Component {
     render() {
 
     const query = this.state.query;
-    const books = this.state.books;
     const showingBooks = this.state.showingBooks;
     const spanElement = this.state.spanElement;
 
@@ -93,4 +86,4 @@ class ListBooks extends Component {
         }
     }
 
-export default ListBooks;
+export default Search;

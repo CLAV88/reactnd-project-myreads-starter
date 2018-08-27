@@ -204,7 +204,7 @@ class Bookshelf extends Component {
               </div>
             </div>
             <div className="open-search">
-              <Link to="/ListBooks" className="open-search-link">Search for a book</Link>
+              <Link to="/search" className="open-search-link">Search for a book</Link>
             </div>
           </div>
         )}

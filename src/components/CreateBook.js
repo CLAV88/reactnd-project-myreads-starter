@@ -1,33 +1,35 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import ImageInput from './ImageInput'
-import serializeForm from 'form-serialize'
+import PropTypes from 'prop-types';
 
 class CreateBook extends Component {
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const values = serializeForm(e.target, { hash: true })
-    if (this.props.onCreateBook)
-      this.props.onCreateBook(values)
-  }
-
+    static propTypes = {
+        showingBooks: PropTypes.array.isRequired,
+        onDeleteBook: PropTypes.func.isRequired
+    }
   render() {
     return (
-      <div>
-        <Link className='close-create-book' to='/'>Close</Link>
-        <form onSubmit={this.handleSubmit} className='create-book-form'>
-          <ImageInput
-            className='create-book-avatar-input'
-            name='avatarURL'
-            maxHeight={64}
-          />
-          <div className='create-book-details'>
-            <input type='text' name='name' placeholder='Name'/>
-            <input type='text' name='email' placeholder='Email'/>
-            <button>Add book</button>
-          </div>
-        </form>
-      </div>
+        this.props.books.map((book) => (
+            <li>
+                <div className="book">
+                    <div className="book-top">
+                    <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail +')' }}></div>
+                        <div className="book-shelf-changer">
+                            <select>
+                                <option value="move" disabled>Move to...</option>
+                                <option value="currentlyReading">Currently Reading</option>
+                                <option value="wantToRead">Want to Read</option>
+                                <option value="read">Read</option>
+                                <option value="none">None</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="book-title">{book.title}</div>
+                    <div className="book-authors">{book.authors}</div>
+                </div>
+            </li>
+        ))
     )
   }
 }
