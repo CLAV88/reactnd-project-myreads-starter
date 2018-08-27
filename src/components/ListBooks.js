@@ -3,18 +3,21 @@ import PropTypes from 'prop-types'
 import * as BooksAPI from '../utils/BooksAPI'
 import { Link } from 'react-router-dom'
 import ReactBookshelf from './ReactBookshelf'
+import { debounce } from "throttle-debounce";
 
 class ListBooks extends Component {
     static propTypes = {
         books: PropTypes.array.isRequired,
         onDeleteBook: PropTypes.func.isRequired
     }
+
     
     state = {
         query: '',
         books: [],
         showingBooks: [],
-        spanElement: '0'
+        spanElement: '0',
+        updateQuery: debounce(500, this.updateQuery)
     }
     componentDidMount() {
         BooksAPI.getAll().then((books) => {
