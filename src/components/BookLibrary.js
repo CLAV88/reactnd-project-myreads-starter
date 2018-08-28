@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import * as BooksAPI from '../utils/BooksAPI';
 class BookLibrary extends Component {
     render() {
         const { books } = this.props;
@@ -7,16 +8,16 @@ class BookLibrary extends Component {
             searchResults =  books.map((book) => (
                 ((book.imageLinks) ?            
                     <li>
-                        <div className="book">
+                        <div className="book" id={book.id}>
                             <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
+                                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
                                 <div className="book-shelf-changer">
-                                    <select>
-                                        <option value="move" disabled>Move to...</option>
+                                    <select onChange= {(event) => this.props.updateBookshelf(event.target.parentElement.parentElement.parentElement.id)}>
                                         <option value="currentlyReading">Currently Reading</option>
                                         <option value="wantToRead">Want to Read</option>
                                         <option value="read">Read</option>
                                         <option value="none">None</option>
+                                        <option value="remove">Remove</option>
                                     </select>
                                 </div>
                             </div>
@@ -28,16 +29,7 @@ class BookLibrary extends Component {
                 <li>
                     <div className="book">
                         <div className="book-top">
-                        <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + '/src/img/blank-book-cover-template.jpg' + ')' }}></div>
-                            <div className="book-shelf-changer">
-                                <select>
-                                    <option value="move" disabled>Move to...</option>
-                                    <option value="currentlyReading">Currently Reading</option>
-                                    <option value="wantToRead">Want to Read</option>
-                                    <option value="read">Read</option>
-                                    <option value="none">None</option>
-                                </select>
-                            </div>
+                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + '/src/img/blank-book-cover-template.jpg' + ')' }}></div>
                         </div>
                         <div className="book-title">{book.title}</div>
                         <div className="book-authors">{book.authors}</div>

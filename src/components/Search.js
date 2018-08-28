@@ -79,7 +79,7 @@ class Search extends Component {
                 <div className="search-books-results">
                     <ol className="books-grid"></ol>
                         <div className='showing-books'>
-                            <BookLibrary books={showingBooks}/>
+                            <BookLibrary books={showingBooks} updateBookshelf={this.props.updateBookshelf}/>
                             <p>{spanElement} Results Found </p>
                             <button onClick={this.clearQuery}>Show all</button>
                         </div>

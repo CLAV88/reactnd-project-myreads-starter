@@ -13,10 +13,18 @@ class Bookshelf extends Component {
       componentDidMount() {
         BooksAPI.getAll().then((books) => {
           this.setState({ books })
-          this.ShelveBook();
+          this.shelveBook();
         })
       }
-      ShelveBook() {
+
+        updateBookshelf(book_id) {
+            BooksAPI.get(book_id).then(book => {
+                this.setState(state => ({
+                    books: state.books.concat([ book ])
+                }));
+            });
+        }
+      shelveBook() {
             this.setState((state) => ({
                 readBooks: state.books.filter((c) => c.shelf === 'read')
             }));
@@ -27,14 +35,20 @@ class Bookshelf extends Component {
                 readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
             }));
         }
-    
-      CreateBook(book) {
-        BooksAPI.create(book).then(book => {
-          this.setState(state => ({
-            books: state.books.concat([ book ])
-          }))
-        })
-      }
+        
+        removeBook = (book) => {
+            this.setState((state) => ({
+                books: state.books.filter((c) => c.id !== book.id)
+            }));
+                BooksAPI.remove(book);
+        };
+        createBook(book) {
+            BooksAPI.create(book).then(book => {
+                this.setState(state => ({
+                    books: state.books.concat([ book ])
+                }));
+            });
+        }
         render() {
             return (
             <div className="app">
@@ -61,7 +75,7 @@ class Bookshelf extends Component {
                         <h2 className="bookshelf-title">Currently Reading</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
-                                <BookLibrary books={this.state.readingBooks}/>
+                                <BookLibrary books={this.state.readingBooks} updateBookshelf={this.updateBookshelf}/>
                             </ol>
                         </div>
                         </div>
@@ -69,7 +83,7 @@ class Bookshelf extends Component {
                         <h2 className="bookshelf-title">Want to Read</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
-                                <BookLibrary books={this.state.wantBooks}/>
+                                <BookLibrary books={this.state.wantBooks} updateBookshelf={this.updateBookshelf}/>
                             </ol>
                         </div>
                         </div>
@@ -77,7 +91,7 @@ class Bookshelf extends Component {
                         <h2 className="bookshelf-title">Read</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
-                                <BookLibrary books={this.state.readBooks}/>
+                                <BookLibrary books={this.state.readBooks} updateBookshelf={this.updateBookshelf}/>
                             </ol>
                         </div>
                         </div>
