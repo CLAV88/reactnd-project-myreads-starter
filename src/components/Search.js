@@ -11,12 +11,16 @@ class Search extends Component {
         books: [],
         showingBooks: [],
         spanElement: '0',
-        updateQuery: debounce('750', this.updateQuery)
+        updateQuery: debounce(750, this.updateQuery)
     }
+    static propTypes = {
+        books: PropTypes.array.isRequired,
+    };
+
     componentDidMount() {
         BooksAPI.getAll().then((books) => {
             this.setState({ books })
-        })
+        });
     }
     updateQuery = (query) => {
         this.setState({ 
