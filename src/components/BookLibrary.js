@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-class ReactBookshelf extends Component {
+class BookLibrary extends Component {
     render() {
         const { books } = this.props;
         let searchResults;
@@ -60,7 +60,7 @@ class ReactBookshelf extends Component {
     }
 }
 // Specifies the default values for props:
-ReactBookshelf.defaultProps = {
+BookLibrary.defaultProps = {
     books: [{
         title: 'Search for a new book',
         authors: 'Written by anyone',
@@ -69,4 +69,4 @@ ReactBookshelf.defaultProps = {
         }
     }]
 };
-export default ReactBookshelf;
+export default BookLibrary;

@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import * as BooksAPI from '../utils/BooksAPI'
 import { Link } from 'react-router-dom'
-import ReactBookshelf from './ReactBookshelf'
+import BookLibrary from './BookLibrary'
 import { debounce } from 'throttle-debounce';
 
 class Search extends Component {
     state = {
         query: '',
-        books: [],
         showingBooks: [],
         spanElement: '0',
         updateQuery: debounce(750, this.updateQuery)
@@ -26,10 +25,10 @@ class Search extends Component {
         this.setState({ 
             query: query
         });
-        this.updateBooks(query)
+        this.updateShowingBooks(query)
     };
 
-    updateBooks = function (query) {
+    updateShowingBooks = function (query) {
         BooksAPI.search(query).then((showingBooks) => {
             this.setState({ showingBooks });
             this.updateCount(showingBooks);
@@ -80,7 +79,7 @@ class Search extends Component {
                 <div className="search-books-results">
                     <ol className="books-grid"></ol>
                         <div className='showing-books'>
-                            <ReactBookshelf books={showingBooks}/>
+                            <BookLibrary books={showingBooks}/>
                             <p>{spanElement} Results Found </p>
                             <button onClick={this.clearQuery}>Show all</button>
                         </div>
