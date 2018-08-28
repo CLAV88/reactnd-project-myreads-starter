@@ -1,22 +1,32 @@
 import React, { Component } from 'react'
 import * as BooksAPI from '../utils/BooksAPI'
 import { Link } from 'react-router-dom'
+import BookLibrary from './BookLibrary';
 
 class Bookshelf extends Component {
     state = {
-        books: []
+        books: [],
+        readBooks: [],
+        readingBooks: [],
+        wantBooks: []
       }
       componentDidMount() {
         BooksAPI.getAll().then((books) => {
           this.setState({ books })
+          this.ShelveBook();
         })
       }
-      removeBook = (book) => {
-        this.setState((state) => ({
-          books: state.books.filter((c) => c.id !== book.id)
-        }))
-        BooksAPI.remove(book)
-      }
+      ShelveBook() {
+            this.setState((state) => ({
+                readBooks: state.books.filter((c) => c.shelf === 'read')
+            }));
+            this.setState((state) => ({
+                wantBooks: state.books.filter((c) => c.shelf === 'wantToRead')
+            }));
+            this.setState((state) => ({
+                readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
+            }));
+        }
     
       CreateBook(book) {
         BooksAPI.create(book).then(book => {
@@ -25,50 +35,6 @@ class Bookshelf extends Component {
           }))
         })
       }
-      addBookToShelf(books) {
-            if ((books.map)) {
-                books.map((book) => (
-                    ((book.imageLinks) ?            
-                        <li>
-                            <div className="book">
-                                <div className="book-top">
-                                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
-                                    <div className="book-shelf-changer">
-                                        <select>
-                                            <option value="move" disabled>Move to...</option>
-                                            <option value="currentlyReading">Currently Reading</option>
-                                            <option value="wantToRead">Want to Read</option>
-                                            <option value="read">Read</option>
-                                            <option value="none">None</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="book-title">{book.title}</div>
-                                <div className="book-authors">{book.authors}</div>
-                            </div>
-                        </li>
-                    :          
-                    <li>
-                        <div className="book">
-                            <div className="book-top">
-                            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + '/src/img/blank-book-cover-template.jpg' + ')' }}></div>
-                                <div className="book-shelf-changer">
-                                    <select>
-                                        <option value="move" disabled>Move to...</option>
-                                        <option value="currentlyReading">Currently Reading</option>
-                                        <option value="wantToRead">Want to Read</option>
-                                        <option value="read">Read</option>
-                                        <option value="none">None</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="book-title">{book.title}</div>
-                            <div className="book-authors">{book.authors}</div>
-                        </div>
-                    </li>
-                )))
-            }
-        } 
         render() {
             return (
             <div className="app">
@@ -77,13 +43,6 @@ class Bookshelf extends Component {
                     <div className="search-books-bar">
                     <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
                     <div className="search-books-input-wrapper">
-                        {/*
-                        NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                        You can find these search terms here:
-                        https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-                        However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                        you don't find a specific author or title. Every search is limited by search terms.
-                        */}
                         <input type="text" placeholder="Search by title or author"/>
                     </div>
                     </div>
@@ -102,6 +61,7 @@ class Bookshelf extends Component {
                         <h2 className="bookshelf-title">Currently Reading</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
+                                <BookLibrary books={this.state.readingBooks}/>
                             </ol>
                         </div>
                         </div>
@@ -109,6 +69,7 @@ class Bookshelf extends Component {
                         <h2 className="bookshelf-title">Want to Read</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
+                                <BookLibrary books={this.state.wantBooks}/>
                             </ol>
                         </div>
                         </div>
@@ -116,6 +77,7 @@ class Bookshelf extends Component {
                         <h2 className="bookshelf-title">Read</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
+                                <BookLibrary books={this.state.readBooks}/>
                             </ol>
                         </div>
                         </div>

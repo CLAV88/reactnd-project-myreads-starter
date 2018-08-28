@@ -49,7 +49,6 @@ class BookLibrary extends Component {
         };        
         return (                
             <div className="bookshelf">
-                <h2 className="bookshelf-title">Returned Results</h2>
                 <div className="bookshelf-books">
                     <ol className="books-grid">
                         {searchResults}
