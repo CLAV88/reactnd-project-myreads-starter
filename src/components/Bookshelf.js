@@ -9,7 +9,6 @@ class Bookshelf extends Component {
             readBooks: [],
             readingBooks: [],
             wantBooks: [],
-            newBook: []
         }
         componentDidMount() {
         BooksAPI.getAll().then((books) => {
@@ -18,8 +17,8 @@ class Bookshelf extends Component {
             })
         }
 
-        updateBookshelf(newBook) {
-                    this.setState({books: this.state.books.concat([ newBook ])});
+        updateBookshelf(newBooks) {
+                    this.setState({books: this.state.books.concat([ newBooks ])});
         }
         shelveBook() {
                 this.setState((state) => ({
@@ -46,7 +45,6 @@ class Bookshelf extends Component {
             });
         }
         render() {
-            const updateBookshelf = this.updateBookshelf;
             return (
             <div className="app">
                 {this.state.showSearchPage ? (
@@ -72,7 +70,7 @@ class Bookshelf extends Component {
                         <h2 className="bookshelf-title">Currently Reading</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
-                                <BookLibrary books={this.state.readingBooks} updateBookshelf={this.updateBookshelf}/>
+                                <BookLibrary books={this.state.readingBooks}/>
                             </ol>
                         </div>
                         </div>
@@ -80,7 +78,7 @@ class Bookshelf extends Component {
                         <h2 className="bookshelf-title">Want to Read</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
-                                <BookLibrary books={this.state.wantBooks} updateBookshelf={this.updateBookshelf}/>
+                                <BookLibrary books={this.state.wantBooks}/>
                             </ol>
                         </div>
                         </div>
@@ -88,14 +86,14 @@ class Bookshelf extends Component {
                         <h2 className="bookshelf-title">Read</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
-                                <BookLibrary books={this.state.readBooks} updateBookshelf={this.updateBookshelf}/>
+                                <BookLibrary books={this.state.readBooks}/>
                             </ol>
                         </div>
                         </div>
                     </div>
                     </div>
                     <div className="open-search">
-                        <Link to="/search" books={this.state.books} onUpdateBookshelf= {this.updateBookshelf} className="open-search-link">Search for a book</Link>
+                        <Link to="/search" books={this.state.books} onUpdateBookshelf={this.updateBookshelf.bind(this)} className="open-search-link">Search for a book</Link>
                     </div>
                 </div>
                 )}

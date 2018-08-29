@@ -50,17 +50,26 @@ class Search extends Component {
         this.setState({spanElement: '0'});
     };
     
+    onUpdateBooks(newBooks) {
+        if (this.props.onUpdateBookshelf) {
+            this.props.onUpdateBookshelf(newBooks)
+        }
+    }
+
+
+    
     render() {
 
     const query = this.state.query;
     const showingBooks = this.state.showingBooks;
     const spanElement = this.state.spanElement;
+    const newBooks = this.state.newBooks;
 
 
         return (
             <div className="search-books">
                 <div className="search-books-bar">
-                    <Link to="/" className="close-search">Close</Link>
+                    <Link to="/" component={newBooks} className="close-search">Close</Link>
                     <div className="search-books-input-wrapper">
                         {/*
                         NOTES: The search from BooksAPI is limited to a particular set of search terms.
@@ -89,5 +98,4 @@ class Search extends Component {
         )
         }
     }
-
 export default Search;
