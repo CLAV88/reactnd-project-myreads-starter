@@ -4,38 +4,34 @@ import { Link } from 'react-router-dom'
 import BookLibrary from './BookLibrary';
 
 class Bookshelf extends Component {
-    state = {
-        books: [],
-        readBooks: [],
-        readingBooks: [],
-        wantBooks: []
-      }
-      componentDidMount() {
+        state = {
+            books: [],
+            readBooks: [],
+            readingBooks: [],
+            wantBooks: [],
+            newBook: []
+        }
+        componentDidMount() {
         BooksAPI.getAll().then((books) => {
-          this.setState({ books })
-          this.shelveBook();
-        })
-      }
+            this.setState({ books })
+            this.shelveBook();
+            })
+        }
 
-        updateBookshelf(book_id) {
-            BooksAPI.get(book_id).then(book => {
-                this.setState(state => ({
-                    books: state.books.concat([ book ])
+        updateBookshelf(newBook) {
+                    this.setState({books: this.state.books.concat([ newBook ])});
+        }
+        shelveBook() {
+                this.setState((state) => ({
+                    readBooks: state.books.filter((c) => c.shelf === 'read')
                 }));
-            });
-        }
-      shelveBook() {
-            this.setState((state) => ({
-                readBooks: state.books.filter((c) => c.shelf === 'read')
-            }));
-            this.setState((state) => ({
-                wantBooks: state.books.filter((c) => c.shelf === 'wantToRead')
-            }));
-            this.setState((state) => ({
-                readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
-            }));
-        }
-        
+                this.setState((state) => ({
+                    wantBooks: state.books.filter((c) => c.shelf === 'wantToRead')
+                }));
+                this.setState((state) => ({
+                    readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
+                }));
+            }
         removeBook = (book) => {
             this.setState((state) => ({
                 books: state.books.filter((c) => c.id !== book.id)
@@ -50,6 +46,7 @@ class Bookshelf extends Component {
             });
         }
         render() {
+            const updateBookshelf = this.updateBookshelf;
             return (
             <div className="app">
                 {this.state.showSearchPage ? (
@@ -98,7 +95,7 @@ class Bookshelf extends Component {
                     </div>
                     </div>
                     <div className="open-search">
-                    <Link to="/search" className="open-search-link">Search for a book</Link>
+                        <Link to="/search" books={this.state.books} onUpdateBookshelf= {this.updateBookshelf} className="open-search-link">Search for a book</Link>
                     </div>
                 </div>
                 )}

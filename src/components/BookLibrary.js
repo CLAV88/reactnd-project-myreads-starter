@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import * as BooksAPI from '../utils/BooksAPI';
 class BookLibrary extends Component {
+    handleEvent = (e) => {
+        e.preventDefault()
+        e.persist()
+        BooksAPI.get(e.target.id).then(book => {
+            book.shelf = e.target.options[e.target.options.selectedIndex].text;
+        if(this.props.onUpdateBooks)
+            this.props.onUpdateBooks(book)
+        });
+    }
     render() {
         const { books } = this.props;
         let searchResults;
@@ -12,7 +21,7 @@ class BookLibrary extends Component {
                             <div className="book-top">
                                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
                                 <div className="book-shelf-changer">
-                                    <select onChange= {(event) => this.props.updateBookshelf(event.target.parentElement.parentElement.parentElement.id)}>
+                                    <select onChange={this.handleEvent} id={book.id}>
                                         <option value="currentlyReading">Currently Reading</option>
                                         <option value="wantToRead">Want to Read</option>
                                         <option value="read">Read</option>
@@ -51,13 +60,16 @@ class BookLibrary extends Component {
     }
 }
 // Specifies the default values for props:
-BookLibrary.defaultProps = {
-    books: [{
-        title: 'Search for a new book',
-        authors: 'Written by anyone',
-        imageLinks: {
-            thumbnail: '/src/img/blank-book-cover-template.jpg'
-        }
-    }]
-};
+if (BookLibrary.props) {
+    BookLibrary.defaultProps = {
+        books: [{
+            title: 'Search for a new book',
+            authors: 'Written by anyone',
+            imageLinks: {
+                thumbnail: '/src/img/blank-book-cover-template.jpg'
+            }
+        }]
+    };
+}
+
 export default BookLibrary;

@@ -3,14 +3,13 @@ import PropTypes from 'prop-types'
 import * as BooksAPI from '../utils/BooksAPI'
 import { Link } from 'react-router-dom'
 import BookLibrary from './BookLibrary'
-import { debounce } from 'throttle-debounce';
 
 class Search extends Component {
     state = {
         query: '',
         showingBooks: [],
         spanElement: '0',
-        updateQuery: debounce(750, this.updateQuery)
+        newBooks:[]
     }
     static propTypes = {
         books: PropTypes.array.isRequired,
@@ -34,7 +33,9 @@ class Search extends Component {
             this.updateCount(showingBooks);
         });
     };
-
+    updateBooks(book) {
+            this.setState({newBooks: this.state.newBooks.concat([ book ])});
+    }
     updateCount = function (showingBooks) {
         if (showingBooks) {
             this.setState({spanElement: showingBooks.length});
@@ -42,7 +43,7 @@ class Search extends Component {
             this.setState({spanElement: 0});
         }
     };
-    
+
     clearQuery = () => {
         this.setState({query: ''});
         this.setState({showingBooks: '0'});
@@ -79,9 +80,9 @@ class Search extends Component {
                 <div className="search-books-results">
                     <ol className="books-grid"></ol>
                         <div className='showing-books'>
-                            <BookLibrary books={showingBooks} updateBookshelf={this.props.updateBookshelf}/>
-                            <p>{spanElement} Results Found </p>
-                            <button onClick={this.clearQuery}>Show all</button>
+                            <BookLibrary books={showingBooks} onUpdateBooks={this.updateBooks.bind(this)}/>
+                                <p>{spanElement} Results Found </p>
+                                <button onClick={this.clearQuery}>Show all</button>
                         </div>
                 </div>
             </div>
