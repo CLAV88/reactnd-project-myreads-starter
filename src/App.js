@@ -37,6 +37,23 @@ class BooksApp extends Component {
         }));
 /*             BooksAPI.remove(book); */
     };
+    moveBook = (book) => {
+        this.setState((state) => ({
+            books: state.books.filter((c) => c.id !== book.id)
+        }));
+        this.setState(state => ({
+            books: state.books.concat([ book ])
+        }));
+        this.setState((state) => ({
+            readBooks: state.books.filter((c) => c.shelf === 'read')
+        }));
+        this.setState((state) => ({
+            wantBooks: state.books.filter((c) => c.shelf === 'wantToRead')
+        }));
+        this.setState((state) => ({
+            readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
+        }));
+    };
     createBook(book) {
         this.setState(state => ({
             books: state.books.concat([ book ])
@@ -60,7 +77,7 @@ class BooksApp extends Component {
             readBooks={this.state.readBooks}
             wantBooks={this.state.wantBooks}
             onUpdateBook={(book) => {
-                this.createBook(book)
+                this.moveBook(book)
             }}
             onDeleteBook={(book) => {
                 this.removeBook(book)

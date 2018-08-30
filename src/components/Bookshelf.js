@@ -25,7 +25,7 @@ class Bookshelf extends Component {
                 default:
                     book.shelf = 'none';
                 }
-                this.props.onUpdateBook(book);
+                (book.shelf) ? this.props.onUpdateBook(book):this.props.onDeleteBook(book);
             })
         }
         render() {
@@ -47,7 +47,7 @@ class Bookshelf extends Component {
                                             <div className="book-top">
                                                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
                                                 <div className="book-shelf-changer">
-                                                    <select onChange={this.handleEvent} id={book.id}>
+                                                    <select value={book.shelf} onChange={this.handleEvent} id={book.id}>
                                                         <option value="none" disabled selected value>None</option>
                                                         <option value="currentlyReading">Currently Reading</option>
                                                         <option value="wantToRead">Want to Read</option>
@@ -74,7 +74,7 @@ class Bookshelf extends Component {
                                         <div className="book-top">
                                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
                                             <div className="book-shelf-changer">
-                                                <select onChange={this.handleEvent} id={book.id}>
+                                                <select value={book.shelf} onChange={this.handleEvent} id={book.id}>
                                                     <option value="currentlyReading">Currently Reading</option>
                                                     <option value="wantToRead">Want to Read</option>
                                                     <option value="read">Read</option>
@@ -101,7 +101,7 @@ class Bookshelf extends Component {
                                         <div className="book-top">
                                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
                                             <div className="book-shelf-changer">
-                                                <select onChange={this.handleEvent} id={book.id}>
+                                                <select value={book.shelf} onChange={this.handleEvent} id={book.id}>
                                                     <option value="currentlyReading">Currently Reading</option>
                                                     <option value="wantToRead">Want to Read</option>
                                                     <option value="read">Read</option>
