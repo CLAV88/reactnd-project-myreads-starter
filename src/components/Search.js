@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import * as BooksAPI from '../utils/BooksAPI'
 import { Link } from 'react-router-dom'
-import BookLibrary from './BookLibrary'
 
 class Search extends Component {
     state = {
@@ -51,51 +50,59 @@ class Search extends Component {
     };
     
     onUpdateBooks(newBooks) {
-        if (this.props.onUpdateBookshelf) {
-            this.props.onUpdateBookshelf(newBooks)
+        if (this.props.onUpdateShelf) {
+            this.props.onUpdateShelf(newBooks);
         }
     }
+        render() {
+
+        const query = this.state.query;
+        const showingBooks = this.state.showingBooks;
+        const newBooks = this.state.newBooks;
 
 
-    
-    render() {
-
-    const query = this.state.query;
-    const showingBooks = this.state.showingBooks;
-    const spanElement = this.state.spanElement;
-    const newBooks = this.state.newBooks;
-
-
-        return (
-            <div className="search-books">
-                <div className="search-books-bar">
-                    <Link to="/" component={newBooks} className="close-search">Close</Link>
-                    <div className="search-books-input-wrapper">
-                        {/*
-                        NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                        You can find these search terms here:
-                        https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-                        However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                        you don't find a specific author or title. Every search is limited by search terms.
-                        */}
-                        <input 
-                        type="text"
-                        placeholder="Search by title or author"
-                        value={query}
-                        onChange={(event) => this.updateQuery(event.target.value)}
-                        />
+            return (
+                <div>
+                    <div className="search-books">
+                        <div className="search-books-bar">
+                            <Link to="/" component={newBooks} className="close-search">Close</Link>
+                                <input 
+                                type="text"
+                                placeholder="Search by title or author"
+                                value={query}
+                                onChange={(event) => this.updateQuery(event.target.value)}
+                                />
+                        </div>
                     </div>
-                </div>
-                <div className="search-books-results">
-                    <ol className="books-grid"></ol>
-                        <div className='showing-books'>
-                            <BookLibrary books={showingBooks} onUpdateBooks={this.updateBooks.bind(this)}/>
-                                <p>{spanElement} Results Found </p>
-                                <button onClick={this.clearQuery}>Show all</button>
+                    <div className="bookshelf">
+                        <h2 className="bookshelf-title">Currently Reading</h2>
+                        <div className="bookshelf-books">
+                            <ol className="books-grid">
+                                {showingBooks.map((book) => (
+                                    <li>
+                                        <div className="book" id={book.id}>
+                                            <div className="book-top">
+                                                <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
+                                                <div className="book-shelf-changer">
+                                                    <select onChange={this.handleEvent} id={book.id}>
+                                                        <option value="currentlyReading">Currently Reading</option>
+                                                        <option value="wantToRead">Want to Read</option>
+                                                        <option value="read">Read</option>
+                                                        <option value="none">None</option>
+                                                        <option value="remove">Remove</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div className="book-title">{book.title}</div>
+                                            <div className="book-authors">{book.authors}</div>
+                                        </div>
+                                    </li>
+                                ))}
+                            </ol>
+                        </div>
                         </div>
                 </div>
-            </div>
-        )
+            )
         }
     }
 export default Search;

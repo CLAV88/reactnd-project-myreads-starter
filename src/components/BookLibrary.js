@@ -1,19 +1,25 @@
 import React, { Component } from "react";
 import * as BooksAPI from '../utils/BooksAPI';
 class BookLibrary extends Component {
+    constructor(props) {
+        super(props);
+    }
     handleEvent = (e) => {
         e.preventDefault()
-        e.persist()
-        BooksAPI.get(e.target.id).then(book => {
-            book.shelf = e.target.options[e.target.options.selectedIndex].text;
-        if(this.props.onUpdateBooks)
-            this.props.onUpdateBooks(book)
-        });
+        let id, selOption
+        id = e.target.id
+        selOption = e.target.options[e.target.options.selectedIndex].text
+        BooksAPI.get(id).then(book => {
+            book.shelf = selOption;
+            console.log(book)
+            console.log(book.shelf)
+            this.props.onUpdateBooks(book);
+        })
     }
     render() {
         const { books } = this.props;
         let searchResults;
-        if ((books.map)) {
+        if ((books)) {
             searchResults =  books.map((book) => (
                 ((book.imageLinks) ?            
                     <li>
@@ -21,7 +27,7 @@ class BookLibrary extends Component {
                             <div className="book-top">
                                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
                                 <div className="book-shelf-changer">
-                                    <select onChange={this.handleEvent} id={book.id}>
+                                    <select onChange={this.handleEvent.bind(this)} id={book.id}>
                                         <option value="currentlyReading">Currently Reading</option>
                                         <option value="wantToRead">Want to Read</option>
                                         <option value="read">Read</option>
