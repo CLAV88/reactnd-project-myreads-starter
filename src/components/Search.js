@@ -49,19 +49,32 @@ class Search extends Component {
         this.setState({spanElement: '0'});
     };
     
-    onUpdateBooks(newBooks) {
-        if (this.props.onUpdateShelf) {
-            this.props.onUpdateShelf(newBooks);
-        }
+    handleEvent = (e) => {
+        e.preventDefault()
+        let id, selOption
+        id = e.target.id
+        selOption = e.target.options[e.target.options.selectedIndex].text;
+        BooksAPI.get(id).then(book => {
+            switch(selOption) {
+            case 'Want to Read': 
+                book.shelf = 'wantToRead';
+                break;
+            case 'Read':
+                book.shelf = 'read';
+                break;
+            case 'Currently Reading':
+                book.shelf = 'currentlyReading';
+                break;
+            default:
+                book.shelf = 'none';
+            }
+            this.props.onUpdateBook(book);
+        })
     }
         render() {
-
         const query = this.state.query;
         const showingBooks = this.state.showingBooks;
-        const books = this.props.books
         const newBooks = this.state.newBooks;
-
-
             return (
                 <div>
                     <div className="search-books">
@@ -87,11 +100,10 @@ class Search extends Component {
                                                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
                                                 <div className="book-shelf-changer">
                                                     <select onChange={this.handleEvent} id={book.id}>
+                                                        <option value="none" disabled selected value>None</option>
                                                         <option value="currentlyReading">Currently Reading</option>
                                                         <option value="wantToRead">Want to Read</option>
                                                         <option value="read">Read</option>
-                                                        <option value="none">None</option>
-                                                        <option value="remove">Remove</option>
                                                     </select>
                                                 </div>
                                             </div>

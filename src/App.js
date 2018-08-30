@@ -18,10 +18,7 @@ class BooksApp extends Component {
         this.setState({ books })
         this.shelveBook();
         })
-    }
 
-    updateBookshelf(newBooks) {
-                this.setState({books: this.state.books.concat([ newBooks ])});
     }
     shelveBook() {
             this.setState((state) => ({
@@ -38,13 +35,21 @@ class BooksApp extends Component {
         this.setState((state) => ({
             books: state.books.filter((c) => c.id !== book.id)
         }));
-            BooksAPI.remove(book);
+/*             BooksAPI.remove(book); */
     };
     createBook(book) {
-          this.setState(state => ({
+        this.setState(state => ({
             books: state.books.concat([ book ])
-          }))
-          console.log(this.state.books)
+        }));
+        this.setState((state) => ({
+            readBooks: state.books.filter((c) => c.shelf === 'read')
+        }));
+        this.setState((state) => ({
+            wantBooks: state.books.filter((c) => c.shelf === 'wantToRead')
+        }));
+        this.setState((state) => ({
+            readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
+        }));
       }
      render() {
         return (
@@ -54,7 +59,12 @@ class BooksApp extends Component {
             readingBooks={this.state.readingBooks}
             readBooks={this.state.readBooks}
             wantBooks={this.state.wantBooks}
-            onDeleteBook={this.removeBook}
+            onUpdateBook={(book) => {
+                this.createBook(book)
+            }}
+            onDeleteBook={(book) => {
+                this.removeBook(book)
+            }}
             />)}/>
             <Route path='/search' render={({ history }) => (<Search
             books={this.state.books}
@@ -62,7 +72,6 @@ class BooksApp extends Component {
             readBooks={this.state.readBooks}
             wantBooks={this.state.wantBooks}
             onUpdateBook={(book) => {
-                console.log(book)
                 this.createBook(book)
                 history.push('/')
             }}
