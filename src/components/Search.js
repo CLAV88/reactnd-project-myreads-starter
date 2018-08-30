@@ -58,6 +58,7 @@ class Search extends Component {
 
         const query = this.state.query;
         const showingBooks = this.state.showingBooks;
+        const books = this.props.books
         const newBooks = this.state.newBooks;
 
 
@@ -74,11 +75,12 @@ class Search extends Component {
                                 />
                         </div>
                     </div>
+   
                     <div className="bookshelf">
                         <h2 className="bookshelf-title">Currently Reading</h2>
                         <div className="bookshelf-books">
                             <ol className="books-grid">
-                                {showingBooks.map((book) => (
+                                {(showingBooks && showingBooks.length > 1) ? showingBooks.map((book) => (
                                     <li>
                                         <div className="book" id={book.id}>
                                             <div className="book-top">
@@ -97,7 +99,7 @@ class Search extends Component {
                                             <div className="book-authors">{book.authors}</div>
                                         </div>
                                     </li>
-                                ))}
+                                )): <div>Lets find something to read...</div>}
                             </ol>
                         </div>
                         </div>
