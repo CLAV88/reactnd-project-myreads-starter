@@ -71,16 +71,18 @@ class BooksApp extends Component {
      render() {
         return (
           <div>
-            <Route exact path='/' render={() => (<Bookshelf
+            <Route exact path='/' render={({ history }) => (<Bookshelf
             books={this.state.books}
             readingBooks={this.state.readingBooks}
             readBooks={this.state.readBooks}
             wantBooks={this.state.wantBooks}
             onUpdateBook={(book) => {
                 this.moveBook(book)
+                history.push('/')
             }}
             onDeleteBook={(book) => {
                 this.removeBook(book)
+                history.push('/')
             }}
             />)}/>
             <Route path='/search' render={({ history }) => (<Search
