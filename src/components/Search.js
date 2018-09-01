@@ -94,7 +94,7 @@ class Search extends Component {
                         <div className="bookshelf-books">
                             <ol className="books-grid">
                                 {(showingBooks && showingBooks.length > 1) ? showingBooks.map((book) => (
-                                    <li>
+                                    <li key={book.id}>
                                         <div className="book" id={book.id}>
                                             <div className="book-top">
                                                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>

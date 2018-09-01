@@ -18,55 +18,43 @@ class BooksApp extends Component {
         this.setState({ books })
         this.shelveBook();
         })
-
     }
     shelveBook() {
-            this.setState((state) => ({
-                readBooks: state.books.filter((c) => c.shelf === 'read')
-            }));
-            this.setState((state) => ({
-                wantBooks: state.books.filter((c) => c.shelf === 'wantToRead')
-            }));
-            this.setState((state) => ({
-                readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
-            }));
-        }
-    removeBook = (book) => {
         this.setState((state) => ({
-            books: state.books.filter((c) => c.id !== book.id)
+            readBooks: state.books.filter((c) => c.shelf === 'read')
         }));
-/*             BooksAPI.remove(book); */
+        this.setState((state) => ({
+            wantBooks: state.books.filter((c) => c.shelf === 'wantToRead')
+        }));
+        this.setState((state) => ({
+            readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
+        }));
+    }
+    removeBook = (book) => {
+        BooksAPI.remove(book).then(
+            BooksAPI.update(book,book.shelf).then(
+                this.setState((state) => ({
+                    books: state.books.filter((c) => c.id !== book.id)
+                }))
+            )
+        );
     };
     moveBook = (book) => {
-        this.setState((state) => ({
-            books: state.books.filter((c) => c.id !== book.id)
-        }));
-        this.setState(state => ({
-            books: state.books.concat([ book ])
-        }));
-        this.setState((state) => ({
-            readBooks: state.books.filter((c) => c.shelf === 'read')
-        }));
-        this.setState((state) => ({
-            wantBooks: state.books.filter((c) => c.shelf === 'wantToRead')
-        }));
-        this.setState((state) => ({
-            readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
-        }));
-    };
-    createBook(book) {
-        this.setState(state => ({
-            books: state.books.concat([ book ])
-        }));
-        this.setState((state) => ({
-            readBooks: state.books.filter((c) => c.shelf === 'read')
-        }));
-        this.setState((state) => ({
-            wantBooks: state.books.filter((c) => c.shelf === 'wantToRead')
-        }));
-        this.setState((state) => ({
-            readingBooks: state.books.filter((c) => c.shelf === 'currentlyReading')
-        }));
+        this.removeBook(book)
+            BooksAPI.getAll()
+            .then((books) => {
+                this.setState({ books });
+                this.shelveBook();
+            });
+        };
+    updateBook(book) {
+        BooksAPI.update(book,book.shelf).then(
+            BooksAPI.getAll()
+            .then((books) => {
+                this.setState({ books });
+                this.shelveBook();
+            })
+        );
       }
      render() {
         return (
@@ -91,7 +79,7 @@ class BooksApp extends Component {
             readBooks={this.state.readBooks}
             wantBooks={this.state.wantBooks}
             onUpdateBook={(book) => {
-                this.createBook(book)
+                this.updateBook(book)
                 history.push('/')
             }}
             />

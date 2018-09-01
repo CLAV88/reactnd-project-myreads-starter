@@ -42,7 +42,7 @@ class Bookshelf extends Component {
                         <div className="bookshelf-books">
                             <ol className="books-grid">
                                 {this.props.readingBooks.map((book) => (
-                                    <li>
+                                    <li key={book.id}>
                                         <div className="book" id={book.id}>
                                             <div className="book-top">
                                                 <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
@@ -68,7 +68,7 @@ class Bookshelf extends Component {
                         <div className="bookshelf-books">
                             <ol className="books-grid">
                             {this.props.wantBooks.map((book) => (
-                                <li>
+                                <li key={book.id}>
                                     <div className="book" id={book.id}>
                                         <div className="book-top">
                                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
@@ -94,7 +94,7 @@ class Bookshelf extends Component {
                         <div className="bookshelf-books">
                             <ol className="books-grid">
                             {this.props.readBooks.map((book) => (
-                                <li>
+                                <li key={book.id}>
                                     <div className="book" id={book.id}>
                                         <div className="book-top">
                                             <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(' + book.imageLinks.thumbnail + ')' }}></div>
@@ -118,7 +118,7 @@ class Bookshelf extends Component {
                     </div>
                     </div>
                     <div className="open-search">
-                        <Link to="/search" books={this.props.books} onUpdateBookshelf={this.props.updateShelf} className="open-search-link">Search for a book</Link>
+                        <Link to="/search" className="open-search-link">Search for a book</Link>
                     </div>
                 </div>
             </div>
