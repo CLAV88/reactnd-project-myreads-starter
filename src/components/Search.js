@@ -36,6 +36,9 @@ class Search extends Component {
                     } else if (!book.shelf) {
                         book.shelf = 'none';
                     }
+                    if(!book.hasOwnProperty('imageLinks')) {
+                        book.imageLinks='thumbnail';
+                    }
                 })
             ))
             this.setState({ showingBooks });
