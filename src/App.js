@@ -31,13 +31,11 @@ class BooksApp extends Component {
         }));
     }
     removeBook = (book) => {
-        BooksAPI.remove(book).then(
-            BooksAPI.update(book,book.shelf).then(
-                this.setState((state) => ({
-                    books: state.books.filter((c) => c.id !== book.id)
-                }))
-            )
-        );
+        BooksAPI.update(book,book.shelf).then(
+            this.setState((state) => ({
+                books: state.books.filter((c) => c.id !== book.id)
+            }))
+        )
     };
     moveBook = (book) => {
         this.removeBook(book)
