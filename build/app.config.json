@@ -1,0 +1,12 @@
+{
+  apps : [
+    {
+      name      : "ReactReadsApp",
+      script    : "npx",
+      instances: "max",
+      interpreter: "none",
+      exec_mode: "cluster",      
+      args: "sudo serve -s -l 999"
+    }
+  ]
+}
